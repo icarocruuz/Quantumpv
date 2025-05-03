@@ -1,0 +1,12 @@
+flet
+requests
+Pillow
+iqoptionapi
+exnova
+bullex
+optinary
+broker10
+numpy
+mysql-connector-python
+bcrypt
+uvicorn 
