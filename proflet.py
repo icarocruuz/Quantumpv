@@ -1129,8 +1129,11 @@ def main(page: ft.Page):
 # ...
 
 # Ponto de entrada
-if __name__ == "__main__":
-    ft.app(target=main, view=ft.WEB_BROWSER, host="0.0.0.0", port=8550)
+# if __name__ == "__main__":
+#     ft.app(target=main, view=ft.WEB_BROWSER, host="0.0.0.0", port=8550)
+
+# Cria a instância da aplicação Flet que uvicorn pode usar
+app = ft.app(target=main, view=ft.WEB_BROWSER)
 
 
 

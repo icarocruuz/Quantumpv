@@ -1,1 +1,1 @@
-web: uvicorn proflet:main --host 0.0.0.0 --port $PORT 
+web: uvicorn proflet:app --host 0.0.0.0 --port $PORT 
