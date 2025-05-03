@@ -1442,11 +1442,20 @@ def show_login_screen(page: ft.Page):
                     try:
                         user_session.load_configurations() # Carregar config após login
                         print("UI Thread: Configurações carregadas. Navegando para /initial_screen...") # DEBUG
-                        # Armazenar email no estado global ANTES de navegar
-                        state['current_user_email'] = username
-                        print(f"UI Thread: Email {username} armazenado em state.") # DEBUG
-                        # Navegar para a tela inicial após login bem-sucedido
-                        page.go("/initial_screen") 
+                        # --- Persistir email no client storage ---
+                        page.client_storage.set("user_email", username) # <--- Usar username
+                        # ---------------------------------------
+
+                        # Atualizar estado global
+                        state['current_user_email'] = username # <--- Usar username
+                        # state['API'] = API # <--- REMOVER esta linha (API é conectada separadamente)
+
+                        # Limpar campos sensíveis após uso? (opcional)
+                        # password_field.value = ""
+
+                        # Ir para a tela inicial
+                        log_console(page, f"Login bem-sucedido para {username}. Navegando...", "success") # <--- Usar username
+                        show_initial_screen(page, user_session)
                     except Exception as e_load:
                         print(f"UI Thread: ERRO ao carregar configurações: {e_load}") # DEBUG
                         page.snack_bar = ft.SnackBar(ft.Text(f"Erro ao carregar configs: {e_load}"), bgcolor=quantum_theme["error"])
