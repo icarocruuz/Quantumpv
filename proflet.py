@@ -590,7 +590,7 @@ def check_pix_payment_and_login(event):
         event.page.dialog = ft.AlertDialog(title=ft.Text("PIX payment confirmed!"))
         event.page.dialog.open = True
         pix_login_time = datetime.now() + timedelta(hours=1)
-        show_main_screen(event.page, event.page.user_session)
+        show_main_screen(event.page, get_user_session(event.page.client_storage.get("user_email")))
     else:
         event.page.dialog = ft.AlertDialog(title=ft.Text("PIX payment not confirmed or expired"))
         event.page.dialog.open = True
@@ -613,14 +613,9 @@ def create_connection():
 def validate_online_login(username, password, access_key):
     connection = None
     try:
-        connection = mysql.connector.connect(
-            host='srv901.hstgr.io',
-            user='u676638560_icaro',
-            password='jWbtQ:7NR6|u',
-            database='u676638560_trader'
-        )
+        connection = create_connection()
 
-        if connection.is_connected():
+        if connection and connection.is_connected():
             cursor = connection.cursor()
             query = "SELECT password, access_key, is_blocked FROM users WHERE username = %s"
             cursor.execute(query, (username,))
