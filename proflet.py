@@ -32,7 +32,6 @@ from Proflet5 import (
 )
 from Profler1 import get_pares_disponiveis, get_digital_assets_only
 from Proflet5 import _create_log_control # Importar helper
-import flet.fastapi
 
 # Definições globais de tema Quantum
 quantum_theme = {
@@ -1129,8 +1128,10 @@ def main(page: ft.Page):
 # Função on_file_picked e outras auxiliares (verificar duplicação com Proflet5)
 # ...
 
-# Cria a instância da aplicação ASGI compatível
-app = flet.fastapi.app(main)
+# Ponto de entrada restaurado para execução direta
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8000)) # Ler a porta do ambiente, fallback para 8000
+    ft.app(target=main, view=ft.WEB_BROWSER, port=port, host="0.0.0.0")
 
 
 
