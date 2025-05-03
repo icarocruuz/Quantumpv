@@ -959,7 +959,43 @@ def start_connection(event, user_session):
             pass
 
 def main(page: ft.Page):
-    page.title = "Quantum Trader v3.0"
+
+    # --- ADICIONAR LÓGICA DE RESTAURAÇÃO ---
+    restored_email = page.client_storage.get("user_email")
+    if restored_email:
+        print(f"Tentando restaurar sessão para: {restored_email}")
+        try:
+            user_session = get_user_session(restored_email) # Usa a função get_user_session definida acima
+
+            if user_session:
+                user_session.load_configurations() # Carrega config do DB
+                state['current_user_email'] = restored_email # Define no estado global
+                print(f"Sessão restaurada para {restored_email}. Navegando para initial_screen.")
+                
+                # Configuração básica da página antes de mostrar a tela
+                page.title = "QUANTUM PRO v3.0"
+                page.window_width = 450
+                page.window_height = 850
+                page.window_resizable = False
+                page.window_maximizable = False
+                page.theme_mode = "dark"
+                page.vertical_alignment = ft.MainAxisAlignment.CENTER
+                page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+                
+                # Chama a função para mostrar a tela inicial JÁ LOGADO
+                show_initial_screen(page, user_session)
+                page.update()
+                return # IMPORTANTE: Evita o fluxo normal de inicialização abaixo
+
+        except Exception as e_restore:
+            print(f"Erro ao restaurar sessão para {restored_email}: {e_restore}. Prosseguindo com fluxo normal.")
+            page.client_storage.remove("user_email") # Limpa se deu erro
+
+    # --- FIM DA LÓGICA DE RESTAURAÇÃO ---
+
+    # Se não restaurou, continua com o fluxo normal:
+    print("Nenhuma sessão encontrada ou erro na restauração. Iniciando fluxo normal.")
+    page.title = "QUANTUM PRO v3.0"
     page.window_width = 450
     page.window_height = 850
     page.window_resizable = False
