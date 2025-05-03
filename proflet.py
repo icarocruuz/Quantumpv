@@ -32,6 +32,7 @@ from Proflet5 import (
 )
 from Profler1 import get_pares_disponiveis, get_digital_assets_only
 from Proflet5 import _create_log_control # Importar helper
+import flet.fastapi
 
 # Definições globais de tema Quantum
 quantum_theme = {
@@ -1128,12 +1129,8 @@ def main(page: ft.Page):
 # Função on_file_picked e outras auxiliares (verificar duplicação com Proflet5)
 # ...
 
-# Ponto de entrada
-# if __name__ == "__main__":
-#     ft.app(target=main, view=ft.WEB_BROWSER, host="0.0.0.0", port=8550)
-
-# Cria a instância da aplicação Flet que uvicorn pode usar
-app = ft.app(target=main, view=ft.WEB_BROWSER)
+# Cria a instância da aplicação ASGI compatível
+app = flet.fastapi.app(main)
 
 
 

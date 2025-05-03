@@ -1,3 +1,7 @@
+flet
+requests
+Pillow
+
 numpy
 mysql-connector-python
 bcrypt
