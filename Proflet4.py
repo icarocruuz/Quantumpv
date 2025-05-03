@@ -13,7 +13,7 @@ from Proflet5 import show_loading_overlay, hide_loading_overlay
 from Proflet5 import _create_log_control, log_console, stop_bot, enable_buttons, disable_buttons
 from Proflet5 import estrategias_descricao
 from Proflet5 import animate_appbar_title, animate_text_color
-from utils import validate_online_login, get_user_session
+# from utils import validate_online_login, get_user_session # Comentado ou removido
 
 def show_initial_screen(page: ft.Page, user_session: UserSession):
     # --- IMPORTAR FUNÇÕES DE ANIMAÇÃO AQUI ---
@@ -1517,9 +1517,9 @@ def show_login_screen(page: ft.Page):
                             icon_color=quantum_theme["secondary"],
                             tooltip="Colar da área de transferência",
                             icon_size=20,
-                            on_click=lambda e: (
-                                setattr(access_key_field, 'value', ""), # Define o valor como vazio
-                                e.page.update(access_key_field) # Atualiza o campo específico
+                            on_click=lambda _: (
+                                setattr(access_key_field, 'value', _.page.get_clipboard() or ""), # Restaura page.get_clipboard()
+                                _.page.update(access_key_field) # Atualiza o campo na UI
                             )
                         )
                     ],
